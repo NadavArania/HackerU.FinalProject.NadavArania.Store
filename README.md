@@ -1,4 +1,4 @@
-# HackerU.FinalProject.NadavArania.StoreStore Project Nadav Arania
+# HackerU.FinalProject.NadavArania.StoreStore Project By Nadav Arania
 I present you "Store" website with server and client side form together for gaming and non-gaming products shopping.
 This website giving you the freedom to buy whatever you need and split to 3 user's levels.
 Admin – when you logging as admin you have full control over the website, you can manage users and products with few options for editing and deleting users or products and even adding products to the website as you wish.
