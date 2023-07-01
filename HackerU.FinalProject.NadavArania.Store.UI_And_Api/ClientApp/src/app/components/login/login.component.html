@@ -1,0 +1,53 @@
+<!--Login Failed Message-->
+
+<div *ngIf="vali.logFailed && !service.isLogged" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.loginFailedTitle}}</h4>
+  <p>
+    {{vali.loginFailedContent}}
+  </p>
+</div>
+
+
+<div *ngIf="!vali.alert && !service.isLogged" class="card-body p-4" style="margin-top: 5rem;">
+  <h1 class="lead fw-normal mb-1" style="text-align: center; padding: 5rem;">Login:</h1>
+  <div class="d-flex justify-content-center align-items-center mb-4">
+    <div class="p-4" style="background-color: #f8f9fa;">
+      <!--Login Form-->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-outline mb-4">
+          <label class="form-label" for="f1">Email:</label>
+          <input type="email" id="f1" class="form-control" formControlName="email" />
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <small *ngIf="email.errors?.['required']">{{vali.emptyEmailFailed}}</small>
+            <small *ngIf="email.errors?.['pattern']">{{vali.emailFormatFailed}}</small>
+          </div>
+        </div>
+        <div class="form-outline mb-4">
+          <label class="form-label" for="f2">Password:</label>
+          <input type="password" id="f2" class="form-control" formControlName="password" />
+          <div *ngIf="password.invalid && (password.dirty || password.touched)">
+            <small *ngIf="password.errors?.['required']">{{vali.emptyPasswordFailed}}</small>
+            <small *ngIf="password.errors?.['pattern']">{{vali.passwordFormatFailed}}</small>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-light  btn-rounded">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Login Success Message-->
+
+<div *ngIf="vali.alert && !vali.logFailed && service.isLogged" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.loginCompleteTitle}}</h4>
+  <p>
+    {{vali.loginCompleteContent}}
+  </p>
+</div>
+
+<div *ngIf="!vali.alert && !vali.logFailed && service.isLogged" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.loggedAlreadyTitle}}</h4>
+  <p>
+    {{vali.loggedAlreadyContent}}
+  </p>
+</div>

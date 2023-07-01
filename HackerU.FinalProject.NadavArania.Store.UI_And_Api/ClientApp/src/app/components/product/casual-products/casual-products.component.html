@@ -1,0 +1,90 @@
+  <!--Product Added Message-->
+<div *ngIf="vali.alert && !vali.addFailed" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.productAddedToCartTitle}}</h4>
+  <p>
+    {{vali.productAddedToCartContent}}
+  </p>
+  <button type="button" class="btn btn-light btn-rounded" (click)="stayOrGo()">Go to cart</button>
+</div>
+<!--Product Already Inside Cart Failed Message-->
+<div *ngIf="vali.addFailed && !vali.alert" class="alert" role="alert" data-mdb-color="failed" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.productInCartAlreadyTitle}}</h4>
+  <p>
+    {{vali.productInCartAlreadyContent}}
+  </p>
+</div>
+
+<section>
+  <div class="container py-5">
+    <div class="card rounded-3 mb-4">
+      <div class="card-body p-4">
+        <div class="row d-flex justify-content-between align-items-center">
+          <!--Switch Toggler Price Filter-->
+          <div class="switchToggler">
+            Sort By Price:
+            <div class="form-check form-switch">
+              <input mdbCheckbox
+                     class="form-check-input"
+                     type="checkbox"
+                     id="lp" (click)="sortByLowestFromService()" [disabled]="service.highTrue" />
+              <label class="form-check-label" for="lp">Lowest price</label>
+            </div>
+            <div class="form-check form-switch">
+              <input mdbCheckbox
+                     class="form-check-input"
+                     type="checkbox"
+                     id="hp" (click)="sortByHighestFromService()" [disabled]="service.lowTrue" />
+              <label class="form-check-label" for="hp">Highest price</label>
+            </div>
+          </div>
+          <!--Switch Toggler Name Filter-->
+          <div class="switchToggler">
+            Sort By Name:
+            <div class="form-check form-switch">
+              <input mdbCheckbox
+                     class="form-check-input"
+                     type="checkbox"
+                     id="az" (click)="sortByNameAsceFromService()" [disabled]="service.zToA" />
+              <label class="form-check-label" for="az">A-Z</label>
+            </div>
+            <div class="form-check form-switch">
+              <input mdbCheckbox
+                     class="form-check-input"
+                     type="checkbox"
+                     id="za" (click)="sortByNameDescFromService()" [disabled]="service.aToZ" />
+              <label class="form-check-label" for="za">Z-A</label>
+            </div>
+          </div>
+          <!--Price Range-->
+          <div class="range">
+            <label class="form-label" for="prange">Price range:</label>
+            <span class="badge badge-danger ms-2" style="color:black;">
+              {{crangeValue}}
+            </span>
+            <input type="range" [(ngModel)]="crangeValue" class="form-range" [min]="this.cMinValue" [max]="this.cMaxValue" id="prange" (mousedown)="priceRangeBar()" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--Casual Products Details-->
+      <div class="col-md-12 col-lg-4 mb-4 mb-lg-0" *ngFor="let p of service.casual">
+        <div class="card" style="margin-bottom:2rem;background-color: #f8f9fa;" *ngIf="p.price <= crangeValue">
+          <div class="d-flex justify-content-between p-3">
+            <h5 class="lead mb-0">{{p.name}}</h5>
+          </div>
+          <img [src]="p.image"
+               class="card-img-top" alt="" />
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between mb-3 bottom">
+              <p class="text-dark mb-0">Price: {{p.price}}$</p>
+              <button type="button" class="btn btn-light btn-rounded" *ngIf="user.isLogged" routerLink="/single-product/{{p.id}}">View Details</button>
+              <button type="button" class="btn btn-light btn-rounded" *ngIf="user.isLogged" (click)="service.addToCart(p)">Add to cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+<mdb-accordion [multiple]="true">
+  <mdb-accordion-item>
+    <ng-template mdbAccordionItemHeader>Favorite Item For Gamimng</ng-template>
+    <ng-template mdbAccordionItemBody>
+      <div class="card mb-3" style="margin:auto;" *ngFor="let p of service.bestGaming">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img [src]="p.image"
+                 alt=""
+                 class="img-fluid rounded-start" />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{p.name}}</h5>
+              <p class="card-text">
+                {{p.description}}
+              </p>
+              <p class="card-text">
+                <small class="text-muted">Price: {{p.price}}$</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </mdb-accordion-item>
+  <mdb-accordion-item>
+    <ng-template mdbAccordionItemHeader>Favorite Item For Office</ng-template>
+    <ng-template mdbAccordionItemBody>
+      <div class="card mb-3" style="margin:auto;" *ngFor="let p of service.bestOffice">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img [src]="p.image"
+                 alt=""
+                 class="img-fluid rounded-start" />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{p.name}}</h5>
+              <p class="card-text">
+                {{p.description}}
+              </p>
+              <p class="card-text">
+                <small class="text-muted">Price: {{p.price}}$</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </mdb-accordion-item>
+  <mdb-accordion-item>
+    <ng-template mdbAccordionItemHeader>Favorite Item For Casual</ng-template>
+    <ng-template mdbAccordionItemBody>
+      <div class="card mb-3" style="margin:auto;" *ngFor="let p of service.bestCasual">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img [src]="p.image"
+                 alt=""
+                 class="img-fluid rounded-start" />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{p.name}}</h5>
+              <p class="card-text">
+                {{p.description}}
+              </p>
+              <p class="card-text">
+                <small class="text-muted">Price: {{p.price}}$</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </mdb-accordion-item>
+</mdb-accordion>

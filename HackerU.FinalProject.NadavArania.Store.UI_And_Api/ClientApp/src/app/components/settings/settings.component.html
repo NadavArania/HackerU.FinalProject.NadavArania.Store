@@ -1,0 +1,378 @@
+<section class="h-100 gradient-custom-2">
+  <!--Regular User-->
+  <div *ngIf="service.loggedUser.type == 1" class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-9 col-xl-7">
+        <div class="card">
+          <!--Card Start-->
+          <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+            <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+              <img src="https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg"
+                   alt="" class="img-fluid img-thumbnail mt-4 mb-2"
+                   style="width: 150px; z-index: 1">
+              <button *ngIf="!sForm" type="button" class="btn btn-light  btn-rounded" style="z-index:1" (click)="showForm(service.loggedUser.id)">Edit Profile</button>
+              <button *ngIf="sForm" type="button" class="btn btn-light  btn-rounded" style="z-index:1" (click)="showForm(service.loggedUser.id)">Close Editor</button>
+            </div>
+            <div class="ms-3" style="margin-top: 130px;">
+              <h5>{{service.loggedUser.email}}</h5>
+            </div>
+          </div>
+          <div class="p-2 text-black" style="background-color: white;">
+            <div class="d-flex justify-content-end text-center py-1">
+              <div style="padding:0.5rem;">
+                <p class="mb-1 h5">{{service.ordersNumberHistory}}</p>
+                <p class="small text-muted mb-0">Products Orded</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-4 text-black">
+            <div class="mb-5" *ngIf="sForm">
+              <p class="lead fw-normal mb-1">Profile Details:</p>
+              <div class="p-4" style="background-color: #f8f9fa;">
+                <!--Edit Profile Form-->
+                <form [formGroup]="profileReactiveForm" (ngSubmit)="onSubmitProfile()">
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="f1">Email:</label>
+                    <input type="email" id="f1" class="form-control" formControlName="email" />
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                      <small *ngIf="email.errors?.['required']">{{vali.emptyEmailFailed}}</small>
+                      <small *ngIf="email.errors?.['pattern']">{{vali.emailFormatFailed}}</small>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="f2">Password:</label>
+                    <input type="password" id="f2" class="form-control" formControlName="password" />
+                    <div *ngIf="password.invalid && (password.dirty || password.touched)">
+                      <small *ngIf="password.errors?.['required']">{{vali.emptyPasswordFailed}}</small>
+                      <small *ngIf="password.errors?.['pattern']">{{vali.passwordFormatFailed}}</small>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="f3">Phone:</label>
+                    <input type="text" id="f3" class="form-control" formControlName="phone" />
+                    <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                      <small *ngIf="phone.errors?.['required']">{{vali.emptyPhoneFailed}}</small>
+                      <small *ngIf="phone.errors?.['minlength']">{{vali.phoneLengthFailed}}</small>
+                      <small *ngIf="phone.errors?.['maxlength']">{{vali.phoneLengthFailed}}</small>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="f4">City:</label>
+                    <input type="text" id="f4" class="form-control" formControlName="city" />
+                    <div *ngIf="city.invalid && (city.dirty || city.touched)">
+                      <small *ngIf="city.errors?.['required']">{{vali.emptyCityFailed}}</small>
+                      <small *ngIf="city.errors?.['minlength']">{{vali.cityLengthFailed}}</small>
+                    </div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="f5">Address:</label>
+                    <input type="text" id="f5" class="form-control" formControlName="address" />
+                    <div *ngIf="address.invalid && (address.dirty || address.touched)">
+                      <small *ngIf="address.errors?.['required']">{{vali.emptyAddressFailed}}</small>
+                      <small *ngIf="address.errors?.['minlength']">{{vali.addressLengthFailed}}</small>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-light  btn-rounded">Submit Changes</button>
+                </form>
+              </div>
+            </div>
+            <!--Profile details-->
+            <div class="mb-5 od">
+              <p class="lead fw-normal mb-1">Details:</p>
+              <div class="p-4" style="background-color: #f8f9fa;">
+                <p class="font-italic mb-1">Phone: {{service.loggedUser.phone}}</p>
+                <p class="font-italic mb-1">City: {{service.loggedUser.city}}</p>
+                <p class="font-italic mb-0">Address: {{service.loggedUser.address}}</p>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <p class="lead fw-normal mb-0">Orders History:</p>
+              <button *ngIf="!view" type="button" class="btn btn-light  btn-rounded" (click)="showOrders(service.loggedUser.id)">Show All</button>
+              <button *ngIf="view" type="button" class="btn btn-light  btn-rounded" (click)="closeOrders()">Close Expansion</button>
+            </div>
+            <!--SearchBar-->
+            <div class="input-group" *ngIf="view && service.fullHistory.length != 0">
+              <div class="form-outline">
+                <label class="form-label" for="search">Type what order number for filtering results:</label>
+                <input type="search" id="search" class="form-control" [(ngModel)]="enteredValue" />
+              </div>
+            </div>
+            <!--Order History-->
+            <div *ngIf="service.fullHistory.length == 0 && view">There's no orders yet</div>
+            <div class="row g-2" *ngFor="let o of service.fullHistory" style="padding:0.5rem;">
+              <div class="col mb-2 od" *ngIf="view && o.orderNumber.toLowerCase().includes(enteredValue)" style="background-color: #f8f9fa;">
+                <p>Order Number: {{o.orderNumber}}</p>
+                <p>Order Date: {{o.orderDate | date : 'M/d/yy'}}</p>
+                <p>Product Name: {{o.productName}}</p>
+                <p>Product Picture: {{o.productPrice}}</p>
+                <p>Product Quantity: {{o.quantity}}</p>
+                <img [src]="o.productImage"
+                     alt="image 1" class="w-100 rounded-3">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Card End-->
+      </div>
+    </div>
+  </div>
+
+  <!--Admin-->
+  <mdb-tabs [fill]="true" *ngIf="service.loggedUser.type == 0">
+    <!--Users-->
+    <mdb-tab title="Users">
+      <div class="col col-lg-9 col-xl-7" style="margin:auto;">
+        <div class="card">
+          <!--Start Card-->
+          <div class="card-body p-4 text-black">
+            <div class="mb-5">
+              <div class="row  d-flex justify-content-center align-items-center h-100">
+                <div class="mb-4">
+                  <!--User Order Details-->
+                  <button *ngIf="view" type="button" class="btn btn-light  btn-rounded" (click)="closeOrders()">Close Expansion</button>
+                  <p class="lead fw-normal mb-0" *ngIf="view">Orders History:</p>
+                  <div class="input-group" *ngIf="view && service.fullHistory.length != 0">
+                    <div class="form-outline">
+                      <label class="form-label" for="search">Type what order number for filtering results:</label>
+                      <input type="search" id="search" class="form-control" [(ngModel)]="enteredValue" />
+                    </div>
+                  </div>
+                  <div *ngIf="service.fullHistory.length == 0 && view">There's no orders yet</div>
+                  <div class="row g-2" *ngFor="let o of service.fullHistory" style="padding:0.5rem;">
+                    <div class="col mb-2 od" *ngIf="view && o.orderNumber.toLowerCase().includes(enteredValue)" style="background-color: #f8f9fa;">
+                      <p>Order Number: {{o.orderNumber}}</p>
+                      <p>Order Date: {{o.orderDate | date : 'M/d/yy'}}</p>
+                      <p>Product Name: {{o.productName}}</p>
+                      <p>Product Picture: {{o.productPrice}}</p>
+                      <p>Product Quantity: {{o.quantity}}</p>
+                      <img [src]="o.productImage"
+                           alt="image 1" class="w-100 rounded-3">
+                    </div>
+                    <button *ngIf="view && o.orderNumber.toLowerCase().includes(enteredValue)" type="button" class="btn btn-light  btn-rounded" (click)="deleteFromCart(o.orderNumber)">Delete Order</button>
+                  </div>
+                  <!--User Form-->
+                  <form [formGroup]="profileReactiveForm" (ngSubmit)="onSubmitProfile()" *ngIf="pfForm">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f1">Email:</label>
+                      <input type="email" id="f1" class="form-control" formControlName="email" />
+                      <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                        <small *ngIf="email.errors?.['required']">{{vali.emptyEmailFailed}}</small>
+                        <small *ngIf="email.errors?.['pattern']">{{vali.emailFormatFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f2">Password:</label>
+                      <input type="password" id="f2" class="form-control" formControlName="password" />
+                      <div *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <small *ngIf="password.errors?.['required']">{{vali.emptyPasswordFailed}}</small>
+                        <small *ngIf="password.errors?.['pattern']">{{vali.passwordFormatFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f3">Phone:</label>
+                      <input type="text" id="f3" class="form-control" formControlName="phone" />
+                      <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+                        <small *ngIf="phone.errors?.['required']">{{vali.emptyPhoneFailed}}</small>
+                        <small *ngIf="phone.errors?.['minlength']">{{vali.phoneLengthFailed}}</small>
+                        <small *ngIf="phone.errors?.['maxlength']">{{vali.phoneLengthFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f4">City:</label>
+                      <input type="text" id="f4" class="form-control" formControlName="city" />
+                      <div *ngIf="city.invalid && (city.dirty || city.touched)">
+                        <small *ngIf="city.errors?.['required']">{{vali.emptyCityFailed}}</small>
+                        <small *ngIf="city.errors?.['minlength']">{{vali.cityLengthFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f5">Address:</label>
+                      <input type="text" id="f5" class="form-control" formControlName="address" />
+                      <div *ngIf="address.invalid && (address.dirty || address.touched)">
+                        <small *ngIf="address.errors?.['required']">{{vali.emptyAddressFailed}}</small>
+                        <small *ngIf="address.errors?.['minlength']">{{vali.addressLengthFailed}}</small>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-light  btn-rounded">Submit Changes</button>
+                    <button style="margin:2rem;" type="button" class="btn btn-light  btn-rounded" (click)="closeEdit()">Close Changes</button>
+                  </form>
+                </div>
+                <!--User Details-->
+                <div class="col-md-12 col-lg-4 mb-4 mb-lg-0" *ngFor="let u of service.allUsers">
+                  <div class="card" style="margin-bottom:2rem;background-color: #f8f9fa;">
+                    <div class="d-flex justify-content-between p-3">
+                      <h5 class="lead mb-0">{{u.email}}</h5>
+                    </div>
+                    <div class="card-body">
+                      <p class="text-dark mb-0">Phone: {{u.phone}}</p>
+                      <p class="text-dark mb-0">City: {{u.city}}</p>
+                      <p class="text-dark mb-0">Address: {{u.address}}</p>
+                      <button *ngIf="u.id != 1" type="button" class="btn btn-light btn-rounded" (click)="profileForm(u)">Edit User</button>
+                      <button *ngIf="u.id != 1 && u.id != 2 && u.id !=3" type="button" class="btn btn-light btn-rounded" (click)="service.deleteUserFromDb(u.id)">Delete User</button>
+                      <button *ngIf="!view && u.id != 1" type="button" class="btn btn-light  btn-rounded" (click)="showOrders(u.id)">Show user orders</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mdb-tab>
+    <!--Products-->
+    <mdb-tab title="Products">
+      <!--Messages-->
+      <div class="col col-lg-9 col-xl-7" style="margin:auto;">
+        <div class="card">
+          <div class="card-body p-4 text-black">
+            <!--Add Message-->
+            <div *ngIf="vali.alert" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+              <h4 class="alert-heading">{{vali.productAddTtitle}}</h4>
+              <p>
+                {{vali.productAddContent}}
+              </p>
+            </div>
+            <!--Add Failed Message-->
+            <div *ngIf="vali.addFailed" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+              <h4 class="alert-heading">{{vali.productAddFailedTitle}}</h4>
+              <p>
+                {{vali.productAddFailedContent}}
+              </p>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button type="button" class="btn btn-light btn-rounded" (click)="addProductForm()">Add Product</button>
+            </div>
+
+            <!--Add Product Form-->
+            <div class="d-flex justify-content-center align-items-center mb-4">
+              <form [formGroup]="productReactiveForm" (ngSubmit)="onSubmitProductAdd()" *ngIf="paForm">
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f1">Type:</label>
+                  <input type="number" id="f1" class="form-control" formControlName="type" />
+                  <div *ngIf="type.invalid && (type.dirty || type.touched)">
+                    <small *ngIf="type.errors?.['required']">{{vali.emptyTypeFailed}}</small>
+                  </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f2">Name:</label>
+                  <input type="text" id="f2" class="form-control" formControlName="name" />
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                    <small *ngIf="name.errors?.['required']">{{vali.emptyNameFailed}}</small>
+                    <small *ngIf="name.errors?.['minlength']">{{vali.nameLengthFailed}}</small>
+                  </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f3">Price:</label>
+                  <input type="number" id="f3" class="form-control" formControlName="price" />
+                  <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                    <small *ngIf="price.errors?.['required']">{{vali.emptyPriceFailed}}</small>
+                  </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f4">Description:</label>
+                  <input type="text" id="f4" class="form-control" formControlName="description" />
+                  <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                    <small *ngIf="description.errors?.['required']">{{vali.emptyDescriptionFailed}}</small>
+                    <small *ngIf="description.errors?.['minlength']">{{vali.descriptionMinLengthFailed}}</small>
+                    <small *ngIf="description.errors?.['maxlength']">{{vali.descriptionMaxLengthFailed}}</small>
+                  </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f5">Image:</label>
+                  <input type="text" id="f5" class="form-control" formControlName="image" />
+                  <div *ngIf="image.invalid && (image.dirty || image.touched)">
+                    <small *ngIf="image.errors?.['required']">{{vali.emptyImageFailed}}</small>
+                  </div>
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="f6">Category:</label>
+                  <input type="number" id="f6" class="form-control" formControlName="category" />
+                  <div *ngIf="category.invalid && (category.dirty || category.touched)">
+                    <small *ngIf="category.errors?.['required']">{{vali.emptyCategoryFailed}}</small>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-light  btn-rounded">Submit Product</button>
+                <button style="margin:2rem;" type="button" class="btn btn-light  btn-rounded" (click)="closeEdit()">Close Changes</button>
+              </form>
+            </div>
+            <div class="mb-5">
+              <div class="row">
+                <!--Edit Product Form-->
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                  <form [formGroup]="productReactiveForm" (ngSubmit)="onSubmitProduct()" *ngIf="pForm">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f1">Type:</label>
+                      <input type="number" id="f1" class="form-control" formControlName="type" />
+                      <div *ngIf="type.invalid && (type.dirty || type.touched)">
+                        <small *ngIf="type.errors?.['required']">{{vali.emptyTypeFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f2">Name:</label>
+                      <input type="text" id="f2" class="form-control" formControlName="name" />
+                      <div *ngIf="name.invalid && (name.dirty || name.touched)">
+                        <small *ngIf="name.errors?.['required']">{{vali.emptyNameFailed}}</small>
+                        <small *ngIf="name.errors?.['minlength']">{{vali.nameLengthFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f3">Price:</label>
+                      <input type="number" id="f3" class="form-control" formControlName="price" />
+                      <div *ngIf="price.invalid && (price.dirty || price.touched)">
+                        <small *ngIf="price.errors?.['required']">{{vali.emptyPriceFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f4">Description:</label>
+                      <input type="text" id="f4" class="form-control" formControlName="description" />
+                      <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                        <small *ngIf="description.errors?.['required']">{{vali.emptyDescriptionFailed}}</small>
+                        <small *ngIf="description.errors?.['minlength']">{{vali.descriptionMinLengthFailed}}</small>
+                        <small *ngIf="description.errors?.['maxlength']">{{vali.descriptionMaxLengthFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f5">Image:</label>
+                      <input type="text" id="f5" class="form-control" formControlName="image" />
+                      <div *ngIf="image.invalid && (image.dirty || image.touched)">
+                        <small *ngIf="image.errors?.['required']">{{vali.emptyImageFailed}}</small>
+                      </div>
+                    </div>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="f6">Category:</label>
+                      <input type="number" id="f6" class="form-control" formControlName="category" />
+                      <div *ngIf="category.invalid && (category.dirty || category.touched)">
+                        <small *ngIf="category.errors?.['required']">{{vali.emptyCategoryFailed}}</small>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-light  btn-rounded">Submit Changes</button>
+                    <button style="margin:2rem;" type="button" class="btn btn-light  btn-rounded" (click)="closeEdit()">Close Changes</button>
+                  </form>
+                </div>
+                <!--Product Details-->
+                <div class="col-md-12 col-lg-4 mb-4 mb-lg-0" *ngFor="let p of products.data">
+                  <div class="card" style="margin-bottom:2rem;background-color: #f8f9fa;">
+                    <div class="d-flex justify-content-between p-3">
+                      <h5 class="lead mb-0">{{p.name}}</h5>
+                    </div>
+                    <img [src]="p.image"
+                         class="card-img-top" alt="" />
+                    <div class="card-body">
+
+                      <div class="d-flex justify-content-between mb-3 bottom">
+                        <p class="text-dark mb-0">Price: {{p.price}}$</p>
+                      </div>
+                      <button type="button" class="btn btn-light btn-rounded" (click)="productForm(p)">Edit Product</button>
+                      <button type="button" class="btn btn-light btn-rounded" (click)="products.deleteProductFromDb(p.id)">Delete Product</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mdb-tab>
+  </mdb-tabs>
+
+</section>

@@ -1,0 +1,43 @@
+  <!--Product Added Message-->
+<div *ngIf="vali.alert && !vali.addFailed" class="alert" role="alert" data-mdb-color="success" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.productAddedToCartTitle}}</h4>
+  <p>
+    {{vali.productAddedToCartContent}}
+  </p>
+  <button type="button" class="btn btn-light btn-rounded" (click)="stayOrGo()">Go to cart</button>
+</div>
+<!--Product Already Inside Cart Failed Message-->
+<div *ngIf="vali.addFailed && !vali.alert" class="alert" role="alert" data-mdb-color="failed" style="background-color: #eee;">
+  <h4 class="alert-heading">{{vali.productInCartAlreadyTitle}}</h4>
+  <p>
+    {{vali.productInCartAlreadyContent}}
+  </p>
+</div>
+
+<section> 
+  <div class="container py-5">
+    <button *ngIf="product.type == 0" type="button" class="btn btn-light btn-rounded" routerLink="/gaming-product">Go back to gaming page</button>
+    <button *ngIf="product.type == 1" type="button" class="btn btn-light btn-rounded" routerLink="/office-product">Go back to office page</button>
+    <button *ngIf="product.type == 2" type="button" class="btn btn-light btn-rounded" routerLink="/casual-product">Go back to casual page</button>
+    <div class="justify-content-center">
+      <div class="col-md-8 col-lg-6 col-xl-4" style="margin:auto;">
+        <div class="card text-black" style="background-color: #f8f9fa; padding:2rem;">
+          <img [src]="product.image"
+               class="card-img-top" alt="" />
+          <div class="card-body">
+            <div class="text-center">
+              <h5 class="card-title">{{product.name}}</h5>
+              <p class="text-muted mb-4">{{product.description}}</p>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between">
+                <h5>{{product.price}}$</h5>
+                <button type="button" class="btn btn-light   btn-rounded" *ngIf="user.loggedUser.type != 2" (click)="service.addToCart(product)">Add to cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

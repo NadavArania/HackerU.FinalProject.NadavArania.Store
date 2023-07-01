@@ -1,0 +1,11 @@
+.cont {
+  background-color: black;
+}
+
+.ft {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+button {
+  cursor: pointer;
+}

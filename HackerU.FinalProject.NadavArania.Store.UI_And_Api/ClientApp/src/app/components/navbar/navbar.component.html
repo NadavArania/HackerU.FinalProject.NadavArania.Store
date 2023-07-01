@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <button class="navbar-toggler"
+            type="button"
+            (click)="centered.toggle()"
+            aria-controls="navbarTogglerDemo01"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <h5>=</h5>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center"
+         id="navbarCenteredExample"
+         mdbCollapse
+         #centered="mdbCollapse">
+      <!--Right Side Navbar-->
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="about">About</a>
+        </li>
+        <!--DropDown-->
+        <li class="nav-item">
+          <div class="nav-link" (mouseenter)="productSelected()" (mouseleave)="productSelected()" style="cursor: pointer">
+            Products
+            <ul *ngIf="selectCategory" mdbDropdownMenu class="dropdown-menu" style="display: block; position: absolute; cursor:pointer">
+              <li><a class="dropdown-item" routerLink="gaming-product">Gaming</a></li>
+              <li><a class="dropdown-item" routerLink="office-product">Office</a></li>
+              <li><a class="dropdown-item" routerLink="casual-product">Casual</a></li>
+            </ul>
+          </div>
+        </li>
+        <!--SearchBar-->
+        <li class="nav-item">
+          <div class="input-group">
+            <div id="navbar-search-autocomplete" class="form-outline">
+              <input type="search" id="searchbar" class="form-control" [(ngModel)]="enteredValue" (input)="dataFilter(enteredValue)" />
+              <div *ngFor="let p of productsOptions" style="background-color:white;">
+                <div *ngIf="enteredValue" class="d-flex justify-content-betweens" style="margin: 1rem; cursor: pointer;" (click)="goToSelectedProduct(p.id)">
+                  <h5 class="results">{{p.name}}</h5>
+                  <img [src]="p.image"
+                       alt="" />
+                  <div class="results">{{p.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <!--Left Side Navbar-->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a *ngIf="user.isLogged && user.loggedUser.type != 2" class="nav-link" routerLink="cart">
+            Cart
+            <span class="badge badge-danger ms-2" *ngIf="service.productCart.length > 0">
+              {{service.productCart.length}}
+            </span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="user.isLogged && user.loggedUser.type == 1" class="nav-link" routerLink="settings">Settings</a>
+          <a *ngIf="user.isLogged && user.loggedUser.type == 0" class="nav-link" routerLink="settings">Control Area</a>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="user.isLogged" type="button" class="btn btn-light btn-rounded btn-sm" (click)="logout()">Logout</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="!user.isLogged" type="button" class="btn btn-light btn-rounded btn-sm" routerLink="login">Login</button>
+        </li>
+        <li class="nav-item">
+          <button *ngIf="!user.isLogged" type="button" class="btn btn-light btn-rounded btn-sm" routerLink="register">Signup</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
